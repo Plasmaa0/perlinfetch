@@ -73,12 +73,9 @@ def shell():
 def uptime():
     try:
         uptime = subprocess.check_output(['uptime', '-p'], universal_newlines=True).strip()
-        match = re.search(r"up (\d+) hours?, (\d+) minutes?", uptime)
-        hours = int(match.group(1))
-        minutes = int(match.group(2))
-        uptime_formatted = "{:d}:{:02d}".format(hours, minutes)
-        return uptime_formatted
-    except:
+        return uptime.split('up')[1]
+    except Exception as e:
+        print(e)
         return "error"
 
 # CPU information
