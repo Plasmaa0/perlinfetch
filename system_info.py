@@ -117,3 +117,41 @@ def ram_load():
     used_memory_str = psutil._common.bytes2human(used_memory)
     total_memory_str = psutil._common.bytes2human(total_memory)
     return f'{used_memory_str} / {total_memory_str}'
+
+def test(n_tests: int):
+    funcs=[hostname,
+           machine,
+           kernel,
+           distro,
+           wm,
+           packages,
+           ip,
+           term,
+           shell,
+           uptime,
+           cpu,
+           gpu,
+           screen_res,
+           ram_load
+        ]
+    import time
+    results = []
+    for func in funcs:
+        deltas = []
+        for _ in range(n_tests):
+            t1 = time.process_time()
+            func()
+            t2 = time.process_time()
+            delta = t2-t1
+            deltas.append(delta)
+        avg_time = sum(deltas)/len(deltas)
+        results.append([func.__name__,avg_time])
+    results = sorted(results, key=lambda x: x[1], reverse=True)
+    for name, avg_time in results:
+        print(f'{name}: {round(avg_time,3)}')
+    get_1 = lambda x: x[1]
+    avg_total = sum(map(get_1, results))
+    print(f'\naverage time of single perlinfetch execution: {avg_total}')
+        
+if __name__ == "__main__":
+    test(50)
