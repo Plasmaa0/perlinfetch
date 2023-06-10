@@ -9,6 +9,9 @@ def perlin_ascii(width, height):
     noise4 = PerlinNoise(seed=randint(0,1000),octaves=24)
 
     def convert_brightness(vals, a, b, ascii_symbols, colors_list):
+        def clamp(num, min_value, max_value):
+            num = max(min(num, max_value), min_value)
+            return num
         # Determine the range of values we need to convert
         val_range = b - a
 
@@ -20,13 +23,13 @@ def perlin_ascii(width, height):
 
             # Calculate the index of the ascii symbol to use
             ascii_index = int(normalized_val * (len(ascii_symbols) - 1))
+            ascii_index = clamp(ascii_index, 0, len(ascii_symbols))
+
             color_index = int(normalized_val * (len(colors_list) - 1))
+            color_index = clamp(color_index, 0, len(ascii_symbols))
 
             # Add the corresponding ascii symbol to the list
-            try:
-                brightness_levels.append(termcolor.colored(ascii_symbols[ascii_index], colors_list[color_index]))
-            except:
-                brightness_levels.append(ascii_symbols[ascii_index])
+            brightness_levels.append(termcolor.colored(ascii_symbols[ascii_index], colors_list[color_index]))
         return brightness_levels
     ascii_symbols = [' ', '.', ',', '-', '~', '=', '+', '*', '#', '$']
     colors = ['black', 'dark_grey', 'grey', 'light_grey', 'white', 
