@@ -52,7 +52,7 @@ def ip():
         local_ip = s.getsockname()[0]
     except:
         # If the above fails, fallback to the output of 'hostname -I'
-        local_ip = subprocess.check_output(['hostname', '-I'], universal_newlines=True).strip().split(' ')[0]
+        local_ip = subprocess.check_output(['hostname', '-i'], universal_newlines=True).strip().split(' ')[0]
 
     s.close()
 
