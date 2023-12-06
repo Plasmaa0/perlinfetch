@@ -50,9 +50,10 @@ if terminal_width < len(table.split('\n')[0])+w:
 # next(colors)
 horizontal = True
 perlin = True
+scale = 8
 if horizontal:
     if perlin:
-        lines = [i.rstrip('\n') for i in perlin_ascii(h,w).split('\n')]
+        lines = [i.rstrip('\n') for i in perlin_ascii(h,w,scale).split('\n')]
         l = len(lines[1])
         for artline, infoline in zip_longest(lines, table.split('\n')):
             infoline = infoline if infoline is not None else ''

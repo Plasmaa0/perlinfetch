@@ -1,6 +1,6 @@
 import termcolor
 
-def perlin_ascii(width, height):
+def perlin_ascii(width, height, scale=8):
     from perlin_noise import PerlinNoise
     from random import randint
     noise1 = PerlinNoise(seed=randint(0,1000),octaves=3)
@@ -23,10 +23,10 @@ def perlin_ascii(width, height):
 
             # Calculate the index of the ascii symbol to use
             ascii_index = int(normalized_val * (len(ascii_symbols) - 1))
-            ascii_index = clamp(ascii_index, 0, len(ascii_symbols))
+            ascii_index = clamp(ascii_index, 0, len(ascii_symbols)-1)
 
             color_index = int(normalized_val * (len(colors_list) - 1))
-            color_index = clamp(color_index, 0, len(ascii_symbols))
+            color_index = clamp(color_index, 0, len(colors_list)-1)
 
             # Add the corresponding ascii symbol to the list
             brightness_levels.append(termcolor.colored(ascii_symbols[ascii_index], colors_list[color_index]))
@@ -39,7 +39,6 @@ def perlin_ascii(width, height):
 
     h = height
     w = width
-    scale = 4
     pic = ''
     for i in range(w):
         row = []
@@ -49,6 +48,6 @@ def perlin_ascii(width, height):
             noise_val += 0.25 * noise3([i/(w*scale), j/(h*scale)])
             noise_val += 0.125 * noise4([i/(w*scale), j/(h*scale)])
             row.append(noise_val)
-        as_text = convert_brightness(row, -0.05, 0.6, ascii_symbols, colors)
+        as_text = convert_brightness(row, min(row), max(row), ascii_symbols, colors)
         pic += ''.join(as_text) + '\n'
     return pic.rstrip('\n')
