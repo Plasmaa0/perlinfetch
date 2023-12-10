@@ -1,6 +1,6 @@
 import termcolor
 
-def perlin_ascii(width, height, scale=8):
+def perlin_ascii(width, height, scale):
     from perlin_noise import PerlinNoise
     from random import randint
     noise1 = PerlinNoise(seed=randint(0,1000),octaves=3)
